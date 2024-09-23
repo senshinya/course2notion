@@ -147,7 +147,7 @@ export default function Home() {
   };
 
   function getDayOfWeek(dayNumber: number): string {
-    const days: string[] = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+    const days: string[] = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
     
     if (dayNumber < 0 || dayNumber > 6 || !Number.isInteger(dayNumber)) {
       throw new Error('Invalid day number. Please provide a number between 0 and 6.');

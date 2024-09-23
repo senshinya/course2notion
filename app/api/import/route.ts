@@ -21,25 +21,18 @@ function parseWeeks(weeksString: string): number[] {
 
 function formatDateTimeWithTimeZone(date: Date, time: string): string {
   const [hours, minutes] = time.split(':').map(Number);
-  const newDate = new Date(date);
-  newDate.setHours(hours, minutes, 0, 0);
   
-  // 格式化为有效的 ISO 8601 字符串
-  return newDate.toLocaleString('en-US', { 
-    timeZone: 'Asia/Shanghai',
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    hour12: false
-  }).replace(/(\d+)\/(\d+)\/(\d+),\s(\d+):(\d+):(\d+)/, '\$3-\$1-\$2T\$4:\$5:\$6+08:00');
+  // 创建一个代表 Asia/Shanghai 时区的时间字符串
+  const shanghaiDateString = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}T${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:00+08:00`;
+
+  // 直接返回这个字符串，它已经是正确的 ISO 8601 格式，包含了 Asia/Shanghai 时区信息
+  return shanghaiDateString;
 }
 
 export async function POST(request: Request) {
   const { notionApiKey, databaseId, semesterName, startDate, courses } = await request.json();
 
+  console.log(courses)
   if (!notionApiKey || !databaseId || !semesterName || !startDate || !courses) {
     return NextResponse.json({ message: 'Missing required fields' }, { status: 400 });
   }
